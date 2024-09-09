@@ -147,6 +147,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  path_drawing:
+    dependency: "direct main"
+    description:
+      name: path_drawing
+      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: e3e67b1629e6f7e8100b367d3db6ba6af4b1f0bb80f64db18ef1fbabd2fa9ccf
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: c15605cd28af66339f8eb6fbe0e541bfe2d1b72d5825efc6598f3e0a31b9ad27
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -184,6 +208,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  svg_path_parser:
+    dependency: "direct main"
+    description:
+      name: svg_path_parser
+      sha256: adff09b1099a0c9e0dc81e1975de70999889f825c1a2e8e9139bab03464a3657
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   term_glyph:
     dependency: transitive
     description:
@@ -200,6 +232,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  touchable:
+    dependency: "direct main"
+    description:
+      name: touchable
+      sha256: "50040b39778bb1adc8a480625de8681253bd2134785395cf16abd66bb13d3ed0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   vector_math:
     dependency: transitive
     description:
@@ -216,6 +256,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.2.5"
+  xml:
+    dependency: "direct main"
+    description:
+      name: xml
+      sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.5.0"
 sdks:
   dart: ">=3.5.1 <4.0.0"
   flutter: ">=3.18.0-18.0.pre.54"

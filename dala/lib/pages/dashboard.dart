@@ -60,41 +60,63 @@ class _DashboardPageState extends State<DashboardPage> {
             fontSize: 24,
           ),
         ),
-        drawer: NavigationDrawer(
+        drawer: Drawer(
           backgroundColor: AppColor.dashboardBackgroundColor,
-          children: [
-            DrawerHeader(
-              padding: const EdgeInsets.all(32),
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 48,
-                      child: Image.asset("assets/farmer.png"),
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 250,
+                child: DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(0),
+                    margin: const EdgeInsets.all(0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            radius: 64,
+                            child: Image.asset("assets/farmer.png"),
+                          ),
+                        ),
+                        const Column(
+                          children: [
+                            Text(
+                              "Surya Narayan Dash",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: AppColor.whiteColor,
+                              ),
+                            ),
+                            Text(
+                              "OD392831H",
+                              style: TextStyle(
+                                  fontSize: 15, color: AppColor.whiteColor),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            sideMenuListTile(Icons.add, 'Add New Vehicle'),
-            sideMenuListTile(Icons.fire_truck, 'Manage Vehicles'),
-            sideMenuListTile(Icons.live_help, 'Application Help'),
-            sideMenuListTile(Icons.help, 'FAQ'),
-            sideMenuListTile(Icons.settings, 'Settings'),
-            sideMenuListTile(Icons.pest_control_rounded, 'Need Help?'),
-            sideMenuListTile(Icons.book, 'User Guide'),
-            sideMenuListTile(Icons.card_travel_rounded, 'Our Products'),
-            sideMenuListTile(Icons.login, 'Log Out'),
-            sideMenuListTile(Icons.report, 'Report Issue'),
-          ],
+              sideMenuListTile(Icons.add, 'Add New Vehicle'),
+              sideMenuListTile(Icons.fire_truck, 'Manage Vehicles'),
+              sideMenuListTile(Icons.live_help, 'Help and Support'),
+              sideMenuListTile(Icons.help, 'FAQ'),
+              sideMenuListTile(Icons.settings, 'Settings'),
+              sideMenuListTile(Icons.pest_control_rounded, 'Need Help?'),
+              sideMenuListTile(Icons.book, 'User Guide'),
+              sideMenuListTile(Icons.card_travel_rounded, 'Our Products'),
+              sideMenuListTile(Icons.login, 'Log Out'),
+              sideMenuListTile(Icons.report, 'Report Issue'),
+            ],
+          ),
         ),
         backgroundColor: AppColor.dashboardBackgroundColor,
         body: Column(
@@ -164,6 +186,49 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 500),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.calendar_month_outlined,
+                  size: 64,
+                  color: AppColor.whiteColor,
+                  shadows: [
+                    for (double i = 1; i < 3; i++)
+                      Shadow(
+                        color: AppColor.whiteColor,
+                        blurRadius: 3 * i,
+                      )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Your next maintenance is on:",
+                      style: TextStyle(color: AppColor.whiteColor),
+                    ),
+                    Text(
+                      "30 September 2024",
+                      style: TextStyle(
+                        color: AppColor.whiteColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          for (double i = 1; i < 3; i++)
+                            Shadow(
+                              color: AppColor.whiteColor,
+                              blurRadius: 3 * i,
+                            )
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
             )
           ],
         ),
@@ -179,6 +244,9 @@ Widget sideMenuListTile(IconData icon, String title,
       icon,
       size: iconSize,
       color: iconColor,
+    ),
+    shape: const Border(
+      bottom: BorderSide(),
     ),
     title: Text(
       title,
