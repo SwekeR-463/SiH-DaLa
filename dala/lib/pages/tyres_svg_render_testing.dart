@@ -62,14 +62,16 @@ Future<List<Tyre>> loadSvgImage({required String svgImage}) async {
 // Widget to render a single clipped tyre with interactivity
 class TyreWidget extends StatelessWidget {
   final Tyre tyre;
-  final Function(Tyre tyre) onTyreSelected;
+  final Function(Tyre tyre) onTapTyreSelected;
+  final Function(Tyre tyre) onDoubleTabTyreSelected;
   final Color color;
 
   const TyreWidget({
     super.key,
     required this.tyre,
-    required this.onTyreSelected,
     required this.color,
+    required this.onTapTyreSelected,
+    required this.onDoubleTabTyreSelected,
   });
 
   @override
@@ -77,10 +79,11 @@ class TyreWidget extends StatelessWidget {
     return ClipPath(
       clipper: Clipper(svgPath: tyre.path),
       child: GestureDetector(
-        onTap: () => onTyreSelected(tyre),
+        onTap: () => onTapTyreSelected(tyre),
         child: Container(
           color: color,
         ),
+        onDoubleTap: () => onDoubleTabTyreSelected(tyre),
       ),
     );
   }
@@ -88,12 +91,14 @@ class TyreWidget extends StatelessWidget {
 
 class InteractiveSVGTyre extends StatefulWidget {
   final String svgAsset;
-  final Function(Tyre)? onTyreSelected;
+  final Function(Tyre)? onTapTyreSelected;
+  final Function(Tyre)? onDoubleTabTyreSelected;
 
   const InteractiveSVGTyre({
     super.key,
     required this.svgAsset,
-    this.onTyreSelected,
+    this.onTapTyreSelected,
+    this.onDoubleTabTyreSelected,
   });
 
   @override
@@ -102,7 +107,8 @@ class InteractiveSVGTyre extends StatefulWidget {
 
 class _InteractiveSVGTyreState extends State<InteractiveSVGTyre> {
   Future<List<Tyre>>? _tires;
-  Tyre? _selectedTyre;
+  Tyre? _tapSelectedTyre;
+  Tyre? _doubleTapSelectedTyre;
 
   @override
   void initState() {
@@ -135,17 +141,26 @@ class _InteractiveSVGTyreState extends State<InteractiveSVGTyre> {
                       for (var tyre in tires)
                         TyreWidget(
                           tyre: tyre,
-                          onTyreSelected: (selectedTyre) {
+                          onTapTyreSelected: (selectedTyre) {
                             setState(() {
-                              if (tyre.isTyre) _selectedTyre = selectedTyre;
+                              if (tyre.isTyre) _tapSelectedTyre = selectedTyre;
+                            });
+                          },
+                          onDoubleTabTyreSelected: (selectedTyre) {
+                            setState(() {
+                              if (tyre.isTyre) {
+                                _tapSelectedTyre = selectedTyre;
+                                _doubleTapSelectedTyre = selectedTyre;
+                              }
                             });
                           },
                           color: (tyre.isTyre)
-                              ? Colors.black.withOpacity(_selectedTyre == null
-                                  ? 1.0
-                                  : _selectedTyre == tyre
+                              ? Colors.black
+                                  .withOpacity((_doubleTapSelectedTyre == null || _tapSelectedTyre != _doubleTapSelectedTyre)
                                       ? 1.0
-                                      : 0.3)
+                                      : _doubleTapSelectedTyre == tyre
+                                          ? 1.0
+                                          : 0.3)
                               : Colors.grey,
                         )
                     ],
@@ -164,7 +179,7 @@ class _InteractiveSVGTyreState extends State<InteractiveSVGTyre> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                _selectedTyre?.name ?? 'No Tyre Selected',
+                _tapSelectedTyre?.name ?? 'No Tyre Selected',
                 style: const TextStyle(
                     fontSize: 24.0, fontWeight: FontWeight.bold),
               ),

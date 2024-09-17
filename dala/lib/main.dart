@@ -1,5 +1,6 @@
 import 'package:dala/firebase_options.dart';
 import 'package:dala/pages/esp_test_page.dart';
+import 'package:dala/pages/tyres_svg_render_testing.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const ESPTestPage(),
+      home: const InteractiveSVGTyre(svgAsset: "assets/svg/tyre1.svg"),
     );
   }
 }
