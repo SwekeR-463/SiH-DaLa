@@ -3,17 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:xml/xml.dart';
 
-class Country {
+class Tyre {
   final String id;
   final String path;
   final String name;
-  final Color color;
+  final bool isTyre;
 
-  Country({
+  Tyre({
     required this.id,
     required this.path,
     required this.name,
-    required this.color,
+    required this.isTyre,
   });
 }
 
@@ -27,17 +27,17 @@ class Clipper extends CustomClipper<Path> {
     var path = parseSvgPathData(svgPath);
     final Matrix4 matrix4 = Matrix4.identity();
 
-    matrix4.scale(1.1, 1.1);
+    matrix4.scale(0.7, 0.7);
 
-    return path.transform(matrix4.storage).shift(const Offset(-220, 0));
+    return path.transform(matrix4.storage).shift(const Offset(-225, 100));
   }
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-Future<List<Country>> loadSvgImage({required String svgImage}) async {
-  List<Country> maps = [];
+Future<List<Tyre>> loadSvgImage({required String svgImage}) async {
+  List<Tyre> tires = [];
 
   String? generalString = await rootBundle.loadString(svgImage);
 
@@ -49,37 +49,35 @@ Future<List<Country>> loadSvgImage({required String svgImage}) async {
     String partId = ele.getAttribute('id').toString();
     String partPath = ele.getAttribute('d').toString();
     String name = ele.getAttribute('name').toString();
-    String color = ele.getAttribute('color').toString();
+    bool isTyre = ele.getAttribute('isTyre').toString() == "1";
 
-    maps.add(Country(
-        id: partId,
-        path: partPath,
-        name: name,
-        color: Color(int.parse('FF$color', radix: 16))));
+    tires.add(
+      Tyre(id: partId, path: partPath, name: name, isTyre: isTyre),
+    );
   }
 
-  return maps;
+  return tires;
 }
 
-// Widget to render a single clipped country with interactivity
-class CountryWidget extends StatelessWidget {
-  final Country country;
-  final Function(Country country) onCountrySelected;
+// Widget to render a single clipped tyre with interactivity
+class TyreWidget extends StatelessWidget {
+  final Tyre tyre;
+  final Function(Tyre tyre) onTyreSelected;
   final Color color;
 
-  const CountryWidget({
+  const TyreWidget({
     super.key,
-    required this.country,
-    required this.onCountrySelected,
+    required this.tyre,
+    required this.onTyreSelected,
     required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return ClipPath(
-      clipper: Clipper(svgPath: country.path),
+      clipper: Clipper(svgPath: tyre.path),
       child: GestureDetector(
-        onTap: () => onCountrySelected(country),
+        onTap: () => onTyreSelected(tyre),
         child: Container(
           color: color,
         ),
@@ -88,28 +86,28 @@ class CountryWidget extends StatelessWidget {
   }
 }
 
-class InteractiveSVGMap extends StatefulWidget {
+class InteractiveSVGTyre extends StatefulWidget {
   final String svgAsset;
-  final Function(Country)? onCountrySelected;
+  final Function(Tyre)? onTyreSelected;
 
-  const InteractiveSVGMap({
+  const InteractiveSVGTyre({
     super.key,
     required this.svgAsset,
-    this.onCountrySelected,
+    this.onTyreSelected,
   });
 
   @override
-  State<InteractiveSVGMap> createState() => _InteractiveSVGMapState();
+  State<InteractiveSVGTyre> createState() => _InteractiveSVGTyreState();
 }
 
-class _InteractiveSVGMapState extends State<InteractiveSVGMap> {
-  Future<List<Country>>? _countries;
-  Country? _selectedCountry;
+class _InteractiveSVGTyreState extends State<InteractiveSVGTyre> {
+  Future<List<Tyre>>? _tires;
+  Tyre? _selectedTyre;
 
   @override
   void initState() {
     super.initState();
-    _countries = loadSvgImage(svgImage: widget.svgAsset);
+    _tires = loadSvgImage(svgImage: widget.svgAsset);
   }
 
   @override
@@ -118,36 +116,37 @@ class _InteractiveSVGMapState extends State<InteractiveSVGMap> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Map Page",
+          "Tyre Page",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Stack(
         children: [
-          FutureBuilder<List<Country>>(
-            future: _countries,
+          FutureBuilder<List<Tyre>>(
+            future: _tires,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final countries = snapshot.data!;
+                final tires = snapshot.data!;
                 return InteractiveViewer(
-                  maxScale: 5.0,
+                  maxScale: 10.0,
                   minScale: 0.1,
                   child: Stack(
                     children: [
-                      for (var country in countries)
-                        CountryWidget(
-                          country: country,
-                          onCountrySelected: (selectedCountry) {
+                      for (var tyre in tires)
+                        TyreWidget(
+                          tyre: tyre,
+                          onTyreSelected: (selectedTyre) {
                             setState(() {
-                              _selectedCountry = selectedCountry;
+                              if (tyre.isTyre) _selectedTyre = selectedTyre;
                             });
                           },
-                          color:
-                              country.color.withOpacity(_selectedCountry == null
+                          color: (tyre.isTyre)
+                              ? Colors.black.withOpacity(_selectedTyre == null
                                   ? 1.0
-                                  : _selectedCountry == country
+                                  : _selectedTyre == tyre
                                       ? 1.0
-                                      : 0.3),
+                                      : 0.3)
+                              : Colors.grey,
                         )
                     ],
                   ),
@@ -165,7 +164,7 @@ class _InteractiveSVGMapState extends State<InteractiveSVGMap> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                _selectedCountry?.name ?? 'No Country Selected',
+                _selectedTyre?.name ?? 'No Tyre Selected',
                 style: const TextStyle(
                     fontSize: 24.0, fontWeight: FontWeight.bold),
               ),

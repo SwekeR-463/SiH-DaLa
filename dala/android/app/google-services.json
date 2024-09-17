@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "718793385489",
+    "project_id": "coalquip",
+    "storage_bucket": "coalquip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718793385489:android:9ca07e39035ab79e89f3b0",
+        "android_client_info": {
+          "package_name": "com.example.dala"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB26FTTHQBOzapURuy7S1k3g8Gbrnfg2ao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
